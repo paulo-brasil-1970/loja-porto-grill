@@ -127,7 +127,7 @@ export default function Checkout() {
     try {
       // Monta payload do pedido
       const pedidoPayload = {
-        cliente_vip_id:  usuario.id,
+        cliente_vip_id:  null, // loja users não estão em public.clientes — vinculação VIPcard futura
         nome_cliente:    nomeUsuario,
         telefone:        usuario.user_metadata?.telefone || '',
         tipo:            'delivery',

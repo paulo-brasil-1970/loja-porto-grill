@@ -2,7 +2,7 @@
 // Fluxo: usuário chega aqui quando tenta acessar /checkout sem sessão.
 // Após autenticação, volta para a rota de origem (state.from) ou para /.
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../store/auth'
 
@@ -19,7 +19,14 @@ export default function Login() {
   const location  = useLocation()
   const destino   = location.state?.from || '/'
 
-  const { login, cadastrar } = useAuth()
+  const { login, cadastrar, session, carregando: sessaoCarregando } = useAuth()
+
+  // Se já estiver autenticado, pula a tela de login
+  useEffect(() => {
+    if (!sessaoCarregando && session) {
+      navigate(destino, { replace: true })
+    }
+  }, [session, sessaoCarregando, navigate, destino])
 
   const [aba, setAba]       = useState('entrar') // 'entrar' | 'cadastrar'
   const [carregando, setCarregando] = useState(false)
